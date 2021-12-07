@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  queue-writer-redis-rdb:
+    image: queue-client-compare
+    container_name: queue-writer-redis-rdb
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/set_to_redis_rdb.php" ]
+
+  queue-reader-redis-rdb:
+    image: queue-client-compare
+    container_name: queue-reader-redis-rdb
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/read_to_redis_rdb.php" ]
+
+  redis_rdb:
+    image: redis:6.2.6
+    container_name: redis-queue-rdb
+    #restart: unless-stopped
+    ports:
+      - "16379:6379"
+    volumes:
+      - "./conf/redis/master_rdb.conf:/usr/local/etc/redis/redis.conf"
+    networks:
+      - queue-compare
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+  redis_aof:
+    image: redis:6.2.6
+    container_name: redis-queue-aof
+    restart: unless-stopped
+    ports:
+      - "18379:6379"
+    volumes:
+      - "./conf/redis/master_aof.conf:/usr/local/etc/redis/redis.conf"
+    networks:
+      - queue-compare
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+networks:
+  queue-compare:
+    driver: bridge

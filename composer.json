@@ -1,0 +1,13 @@
+{
+    "name": "volodymyr/beanstalkd-vs-redis-queue",
+    "authors": [
+        {
+            "name": "Volodymyr Tochytskyi",
+            "email": "v.tochytskyi@gmail.com"
+        }
+    ],
+    "require": {
+        "predis/predis": "v1.1.9",
+        "ext-pcntl": "*"
+    }
+}
