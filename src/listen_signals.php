@@ -1,6 +1,6 @@
 <?php
 
-$sigTerm = false;
+$shouldTerm = false;
 
 function sig_handler($signo)
 {
@@ -8,7 +8,7 @@ function sig_handler($signo)
 
      switch ($signo) {
          case SIGTERM:
-             $sigTerm = true;
+             $shouldTerm = true;
              break;
          case SIGHUP:
              //restart
@@ -17,5 +17,5 @@ function sig_handler($signo)
      }
 }
 
-pcntl_signal(SIGTERM, "sig_handler");
-pcntl_signal(SIGHUP,  "sig_handler");
+//pcntl_signal(SIGTERM, "sig_handler");
+//pcntl_signal(SIGHUP,  "sig_handler");

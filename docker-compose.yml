@@ -6,31 +6,71 @@ services:
     container_name: queue-writer-redis-rdb
     build:
       context: .
-    env_file:
-      - .env
+    environment:
+      - REDIS_HOST=redis-queue-rdb
+      - REDIS_PORT=6379
+      - QUEUE_ITEMS_COUNT=50000
     volumes:
       - "./:/usr/src/app"
     networks:
       - queue-compare
-    command: [ "php", "./src/set_to_redis_rdb.php" ]
+    command: [ "php", "./src/set_to_redis.php" ]
+    depends_on:
+      - redis_rdb
 
   queue-reader-redis-rdb:
     image: queue-client-compare
     container_name: queue-reader-redis-rdb
     build:
       context: .
-    env_file:
-      - .env
+    environment:
+      - REDIS_HOST=redis-queue-rdb
+      - REDIS_PORT=6379
     volumes:
       - "./:/usr/src/app"
     networks:
       - queue-compare
-    command: [ "php", "./src/read_to_redis_rdb.php" ]
+    command: [ "php", "./src/read_from_redis.php" ]
+    depends_on:
+      - redis_rdb
+
+  queue-writer-redis-aof:
+    image: queue-client-compare
+    container_name: queue-writer-redis-aof
+    build:
+      context: .
+    environment:
+      - REDIS_HOST=redis-queue-aof
+      - REDIS_PORT=6379
+      - QUEUE_ITEMS_COUNT=50000
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/set_to_redis.php" ]
+    depends_on:
+      - redis_aof
+
+  queue-reader-redis-aof:
+    image: queue-client-compare
+    container_name: queue-reader-redis-aof
+    build:
+      context: .
+    environment:
+      - REDIS_HOST=redis-queue-aof
+      - REDIS_PORT=6379
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/read_from_redis.php" ]
+    depends_on:
+      - redis_aof
 
   redis_rdb:
     image: redis:6.2.6
     container_name: redis-queue-rdb
-    #restart: unless-stopped
+    restart: unless-stopped
     ports:
       - "16379:6379"
     volumes:
