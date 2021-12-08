@@ -67,6 +67,39 @@ services:
     depends_on:
       - redis_aof
 
+  beanstalkd-writer:
+    image: queue-client-compare
+    container_name: beanstalkd-writer
+    build:
+      context: .
+    environment:
+      - QUEUE_HOST=beanstalkd
+      - QUEUE_PORT=11300
+      - QUEUE_ITEMS_COUNT=50000
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/set_to_beanstalkd.php" ]
+    depends_on:
+      - beanstalkd
+
+  beanstalkd-reader:
+    image: queue-client-compare
+    container_name: beanstalkd-reader
+    build:
+      context: .
+    environment:
+      - QUEUE_HOST=beanstalkd
+      - QUEUE_PORT=11300
+    volumes:
+      - "./:/usr/src/app"
+    networks:
+      - queue-compare
+    command: [ "php", "./src/read_from_beanstalkd.php" ]
+    depends_on:
+      - beanstalkd
+
   redis_rdb:
     image: redis:6.2.6
     container_name: redis-queue-rdb
@@ -90,6 +123,15 @@ services:
     networks:
       - queue-compare
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+  beanstalkd:
+    image: schickling/beanstalkd
+    container_name: beanstalkd
+    restart: unless-stopped
+    ports:
+      - "11300:11300"
+    networks:
+      - queue-compare
 
 networks:
   queue-compare:

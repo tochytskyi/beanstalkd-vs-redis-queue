@@ -8,6 +8,6 @@
     ],
     "require": {
         "predis/predis": "v1.1.9",
-        "ext-pcntl": "*"
+        "pda/pheanstalk": "v4.0.4"
     }
 }

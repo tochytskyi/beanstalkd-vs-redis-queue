@@ -9,7 +9,7 @@ docker-compose up -d redis_aof
 docker-compose ps
 ```
 Result:
-```shell
+```
      Name                    Command               State            Ports         
 ----------------------------------------------------------------------------------
 redis-queue-aof   docker-entrypoint.sh redis ...   Up      0.0.0.0:18379->6379/tcp
@@ -22,7 +22,7 @@ redis-queue-rdb   docker-entrypoint.sh redis ...   Up      0.0.0.0:16379->6379/t
 docker-compose up queue-writer-redis-rdb
 ```
 Result:
-```shell
+```
 Write finished 50000 values for 16 seconds
 ```
 
@@ -32,7 +32,7 @@ Write finished 50000 values for 16 seconds
 docker-compose up queue-reader-redis-rdb
 ```
 Result:
-```shell
+```
 Write finished 50000 values for 15 seconds
 ```
 
@@ -42,7 +42,7 @@ Write finished 50000 values for 15 seconds
 docker-compose up queue-writer-redis-aof
 ```
 Result:
-```shell
+```
 Write finished 50000 values for 15 seconds
 ```
 
@@ -52,6 +52,26 @@ Write finished 50000 values for 15 seconds
 docker-compose up queue-reader-redis-aof
 ```
 Result:
-```shell
+```
 Write finished 50000 values for 15 seconds
+```
+
+6. **Write to beanstalkd**
+
+```shell
+docker-compose up beanstalkd-writer
+```
+Result:
+```
+Write finished 50000 values for 14 seconds
+```
+
+7. **Read from beanstalkd**
+
+```shell
+docker-compose up beanstalkd-reader
+```
+Result:
+```
+Write finished 50000 values for 30 seconds
 ```
