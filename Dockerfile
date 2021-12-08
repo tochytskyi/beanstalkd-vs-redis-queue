@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN docker-php-ext-configure pcntl --enable-pcntl
+RUN docker-php-ext-install pcntl
 
 RUN composer install
 
