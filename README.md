@@ -33,7 +33,7 @@ docker-compose up queue-reader-redis-rdb
 ```
 Result:
 ```
-Write finished 50000 values for 15 seconds
+Read finished 50000 values for 15 seconds
 ```
 
 4. **Write to redis AOF**
@@ -53,7 +53,7 @@ docker-compose up queue-reader-redis-aof
 ```
 Result:
 ```
-Write finished 50000 values for 15 seconds
+Read finished 50000 values for 15 seconds
 ```
 
 6. **Write to beanstalkd**
@@ -73,5 +73,5 @@ docker-compose up beanstalkd-reader
 ```
 Result:
 ```
-Write finished 50000 values for 30 seconds
+Read finished 50000 values for 30 seconds
 ```
